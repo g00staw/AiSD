@@ -1,5 +1,6 @@
 import java.util.LinkedList;
 
+//stos poprzesz osadzenie - linked lista
 public class LinkedListStack {
 
     private LinkedList<Double> DoubleStack;
