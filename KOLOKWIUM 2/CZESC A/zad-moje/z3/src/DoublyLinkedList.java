@@ -1,7 +1,7 @@
-public class DoublyLinkedList {
 
-    private DLListElement first; // reference to the first
-    private DLListElement last; // reference to the last
+public class DoublyLinkedList {
+    private DListElem first;
+    private  DListElem last;
 
     public DoublyLinkedList(){
         first = null;
@@ -12,58 +12,52 @@ public class DoublyLinkedList {
         return (first == null);
     }
 
-    // adding new element at first index
-    public void addFirst(int value){
-        DLListElement newElement = new DLListElement(value);
+    public void insertFirst(int element){
+        DListElem elem = new DListElem(element);
 
         if(isEmpty()){
-            last = newElement;
+            last = elem;
         }
         else{
-            first.previous = newElement;
+            first.previous = elem;
         }
-
-        newElement.next = first;
-        first = newElement;
+        elem.next = first;
+        first = elem;
     }
 
-    // adding new element at last index
-    public void addLast(int value){
-        DLListElement newElement = new DLListElement(value);
+    public void insertLast(int element){
+        DListElem elem = new DListElem(element);
 
         if(isEmpty()){
-            first = newElement;
+            first = elem;
         }
         else{
-            last.next = newElement;
-            newElement.previous = last;
+            last.next = elem;
+            elem.previous = last;
         }
-        last = newElement;
+        last = elem;
     }
 
-    public DLListElement deleteFirst(){
+    public DListElem removeFirst(){
+       if(isEmpty()){
+           return null;
+       }
+       DListElem temp = first;
+       if(first.next == null){
+           last = null;
+       }
+       else{
+           first.next.previous = null;
+       }
+       first = first.next;
+       return temp;
+    }
 
-        if(isEmpty()){
+    public DListElem removeLast(){
+        if (isEmpty()){
             return null;
         }
-        DLListElement temp = first;
-        if(first.next == null){
-            last = null;
-        }
-        else{
-            first.next.previous = null; // remove link to first element from second element ( second element going to be first now )
-        }
-        first = first.next;
-        return temp;
-    }
-
-    public DLListElement deleteLast(){
-
-        if(isEmpty()){
-            return null;
-        }
-
-        DLListElement temp = last;
+        DListElem temp = last;
         if(first.next == null){
             first = null;
         }
@@ -74,40 +68,94 @@ public class DoublyLinkedList {
         return temp;
     }
 
-    public void print(){
-        System.out.println("List");
-        DLListElement current = first;
+    public boolean find(int element){
+        if(isEmpty()){
+            return false;
+        }
+        if(first.next == null){
+            return (first.iData == element);
+        }
+        else {
+            DListElem temp;
+            temp = first;
+            while (temp.next != null) {
+                if (temp.iData == element) {
+                    return true;
+                }
+                temp = temp.next;
+            }
+            return false;
+        }
+    }
 
-        while(current != null){
-            System.out.println(current.toString()+" ");
-            current = current.next;
+    public boolean delete(int element){
+        if(isEmpty()){
+            return false;
+        }
+        else {
+            DListElem temp = first;
+
+            while (temp != null){
+                if(temp.iData == element){
+                    if(temp == first){
+                        removeFirst();
+                    }
+                    else if(temp == last){
+                        removeLast();
+                    }
+                    else{
+                        temp.previous.next = temp.next;
+                        temp.next.previous = temp.previous;
+                    }
+                    return true;
+                }
+                temp = temp.next;
+            }
+            return false;
         }
 
+    }
+    public void print()
+    {
+        System.out.print("Lista: ");
+        DListElem current = first;   // Zaczynamy na początku listy
+        while (current != null)      // Dopóki nie koniec listy...
+        {
+            System.out.print(current.toString()+" ");
+            current = current.next;  // ...przechodzimy do następnego elementu.
+        }
         System.out.println();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         DoublyLinkedList theList = new DoublyLinkedList();
 
-        theList.addFirst(22);
-        theList.addFirst(44);
-        theList.addFirst(66);
+        theList.insertFirst(22);       // wstawiamy na początek
+        theList.insertFirst(44);
+        theList.insertFirst(66);
 
-        theList.addLast(11);
-        theList.addLast(33);
-        theList.addLast(55);
+        theList.find(44);
+        System.out.println(theList.find(33));
+        System.out.println(theList.delete(44));
 
-        theList.print();
-
-        theList.deleteFirst();
-        theList.deleteFirst();
 
         theList.print();
 
-        theList.deleteLast();
+        theList.insertLast(11);        // wstawiamy na koniec
+        theList.insertLast(33);
+        theList.insertLast(55);
 
-        theList.print();
+        theList.print();         // wypisujemy zawartość listy
+
+        theList.removeFirst();         // usuwamy pierwsze dwa elementy
+        theList.removeFirst();
+
+        theList.print();         // wypisujemy ponownie
+
+        theList.removeLast(); //usuwamy ostatni element
+
+        theList.print();         // wypisujemy ponownie
+
     }
-
-
 }
