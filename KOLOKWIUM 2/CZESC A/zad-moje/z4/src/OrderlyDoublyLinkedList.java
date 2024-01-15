@@ -1,6 +1,6 @@
 public class OrderlyDoublyLinkedList {
-    private DLListElement first;
-    private DLListElement last;
+    private DListElem first;
+    private DListElem last;
 
     public OrderlyDoublyLinkedList(){
         first = null;
@@ -11,39 +11,37 @@ public class OrderlyDoublyLinkedList {
         return (first == null);
     }
 
-    public void addFirst(int value){
-        DLListElement newElement = new DLListElement(value);
-
+    public void addfirst(int element){
+        DListElem elem = new DListElem(element);
         if(isEmpty()){
-            last = newElement;
+            last = elem;
         }
         else{
-            first.previous = newElement;
+            first.previous = elem;
         }
-        newElement.next = first;
-        first = newElement;
+        elem.next = first;
+        first = elem;
     }
 
-    public void addLast(int value){
-        DLListElement newElement = new DLListElement(value);
+    public void addLast(int element){
+        DListElem elem = new DListElem(element);
 
         if(isEmpty()){
-            first = newElement;
+            first = elem;
         }
         else{
-            last.next = newElement;
-            newElement.previous = last;
+            last.next = elem;
+            elem.previous = last;
         }
-        last = newElement;
+        last = elem;
     }
 
-    public DLListElement deleteFirst(){
-        if(isEmpty()){
+    public DListElem deleteFirst(){
+        if (isEmpty()){
             return null;
         }
-
-        DLListElement temp = first;
-        if(first.next == null){
+        DListElem temp = first;
+        if (first.next == null) {
             last = null;
         }
         else{
@@ -53,13 +51,12 @@ public class OrderlyDoublyLinkedList {
         return temp;
     }
 
-    public DLListElement deleteLast(){
-        if(isEmpty()){
+    public DListElem deleteLast(){
+        if (isEmpty()){
             return null;
         }
-
-        DLListElement temp = last;
-        if(first.next == null){
+        DListElem temp = last;
+        if (first.next == null) {
             first = null;
         }
         else{
@@ -69,12 +66,57 @@ public class OrderlyDoublyLinkedList {
         return temp;
     }
 
-    public void addWithOrder(int value) {
-        DLListElement newElement = new DLListElement(value);
-        DLListElement previous = null;
-        DLListElement current = first;
+    public boolean find(int element){
+        if(isEmpty()){
+            return false;
+        }
+        else{
+            DListElem temp = first;
+            while(temp != null){
+                if(temp.iData == element){
+                    return true;
+                }
+                temp = temp.next;
+            }
+            return false;
+        }
+    }
 
-        while (current != null && value > current.insertData) {
+    public boolean delete(int element){
+        DListElem temp = first;
+        if(isEmpty()){
+            return false;
+        }
+        else{
+            if(first.iData == element){
+                deleteFirst();
+                return true;
+            }
+            if(last.iData == element){
+                deleteLast();
+                return true;
+            }
+            else {
+                temp = temp.next;
+                while(temp != null){
+                    if(temp.iData == element){
+                        temp.previous.next = temp.next;
+                        temp.next.previous = temp.previous;
+                        return true;
+                    }
+                    temp = temp.next;
+                }
+            }
+            return false;
+        }
+    }
+
+    public void insert(int element){
+        DListElem newElement = new DListElem(element);
+        DListElem previous = null;
+        DListElem current = first;
+
+        while (current != null && element > current.iData) {
             previous = current;
             current = current.next;
         }
@@ -94,38 +136,9 @@ public class OrderlyDoublyLinkedList {
         }
     }
 
-    public DLListElement deleteChoosen(int value) {
-        if (isEmpty()) return null;
-
-        DLListElement current = first;
-
-        while (current != null && current.insertData != value) {
-            current = current.next; // Przechodzimy do następnego elementu
-        }
-
-        if (current == null) {
-            return null; // Nie znaleziono elementu
-        }
-
-        // Usuwamy znaleziony element
-        if (current == first) {
-            first = current.next; // Jeżeli jest to pierwszy element, zmieniamy pole first
-        } else {
-            current.previous.next = current.next; // Usuwamy aktualny element przez jego pominięcie
-        }
-
-        if (current == last) {
-            last = current.previous; // Jeżeli jest to ostatni element, zmieniamy pole last
-        } else {
-            current.next.previous = current.previous; // Usuwamy aktualny element przez jego pominięcie
-        }
-
-        return current; // Zwracamy usunięty element
-    }
-
     public void print(){
         System.out.println("List");
-        DLListElement current = first;
+        DListElem current = first;
 
         while(current != null){
             System.out.println(current.toString()+" ");
@@ -134,23 +147,28 @@ public class OrderlyDoublyLinkedList {
 
         System.out.println();
     }
-
     public static void main(String[] args) {
+
         OrderlyDoublyLinkedList theList = new OrderlyDoublyLinkedList();
 
-        theList.addWithOrder(22);
-        theList.addWithOrder(44);
-        theList.addWithOrder(66);
+        theList.insert(22);
+        theList.insert(44);
+        theList.insert(66);
 
-        theList.addWithOrder(11);
-        theList.addWithOrder(33);
-        theList.addWithOrder(55);
+        System.out.println(theList.find(44));
+        theList.print();
+        theList.delete(44);
+        theList.print();
 
-        theList.addWithOrder(20);
+        theList.insert(11);
+        theList.insert(33);
+        theList.insert(55);
+
+        theList.insert(20);
 
         theList.print();
 
-        theList.deleteChoosen(33);
+        theList.delete(33);
 
         theList.print();
 
@@ -162,6 +180,7 @@ public class OrderlyDoublyLinkedList {
         theList.deleteLast();
 
         theList.print();
-    }
 
+
+    }
 }
