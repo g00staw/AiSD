@@ -41,19 +41,16 @@ public class TreeSetSet {
         TreeSetSet unionSet = new TreeSetSet();
 
         Iterator<Double> iterator = treeSet.iterator();
-
-        while(iterator.hasNext()){
-            Double locElement = iterator.next().doubleValue();
-            unionSet.add(locElement);
+        while (iterator.hasNext()){
+            Double temp = iterator.next().doubleValue();
+            unionSet.add(temp);
         }
 
-        Iterator<Double> iteratorSS = treeSet.iterator();
-
-        while (iteratorSS.hasNext()){
-            Double locElement = iteratorSS.next().doubleValue();
-            unionSet.add(locElement);
+        Iterator<Double> iterator1 = secondSet.getTreeSet().iterator();
+        while (iterator1.hasNext()){
+            Double temp = iterator1.next();
+            unionSet.add(temp);
         }
-
         return unionSet;
     }
 
@@ -61,32 +58,28 @@ public class TreeSetSet {
         TreeSetSet intersectionSet = new TreeSetSet();
 
         Iterator<Double> iterator = treeSet.iterator();
-
         while (iterator.hasNext()){
-            Double locElement = iterator.next().doubleValue();
-
-            if(secondSet.member(locElement)){
-                intersectionSet.add(locElement);
+            Double temp = iterator.next().doubleValue();
+            if(secondSet.member(temp)){
+                intersectionSet.add(temp);
             }
         }
-
         return intersectionSet;
     }
 
-    public TreeSetSet difference(TreeSetSet secondSet) //Oblicza roznice zbioru biezacego ze zbiorem z parametru metody
-    {
+    public TreeSetSet difference(TreeSetSet secondSet){
         TreeSetSet differenceSet = new TreeSetSet();
 
         Iterator<Double> iterator = treeSet.iterator();
 
-        while (iterator.hasNext())
-        {
-            Double locElem = iterator.next().doubleValue();
-            if (!secondSet.member(locElem))
-                differenceSet.add(locElem);
+        while (iterator.hasNext()){
+            Double temp = iterator.next().doubleValue();
+            if(!secondSet.member(temp)){
+                differenceSet.add(temp);
+            }
         }
-
         return differenceSet;
+
     }
 
     public void print()
